@@ -1,10 +1,9 @@
-import java.awt.Color;
+import java.awt.*;
 
 /**
  * 墨水侵染效果
  *
  * @author hl
- *
  */
 public class WaterRule extends AbstractRule {
     private int moshuiThreshold = 100; // 墨水颜色阈值，低于这个就是有墨水
@@ -20,15 +19,15 @@ public class WaterRule extends AbstractRule {
                 : 255)
                 + (y > 0 ? ImageUtil.getGray(cells[x][y - 1]) : 255)
                 + (y > 0 && x < w ? ImageUtil.getGray(cells[x + 1][y - 1])
-                        : 255)
+                : 255)
                 + (x > 0 ? ImageUtil.getGray(cells[x - 1][y]) : 255)
 
                 + (x < w ? ImageUtil.getGray(cells[x + 1][y]) : 255)
                 + (x > 0 && y < h ? ImageUtil.getGray(cells[x - 1][y + 1])
-                        : 255)
+                : 255)
                 + (y < h ? ImageUtil.getGray(cells[x][y + 1]) : 255)
                 + (y < h && x < w ? ImageUtil.getGray(cells[x + 1][y + 1])
-                        : 255);
+                : 255);
 
         int gray = val / 8;
         // if (gray < 255) {
@@ -44,7 +43,7 @@ public class WaterRule extends AbstractRule {
 
     @Override
     public void updateCellState(int[][] cells, int[][] cellsNext, int x, int y,
-            int width, int height) {
+                                int width, int height) {
         if (GeoUtil.outOfBound(x, y, width, height)) {
             return;
         }
