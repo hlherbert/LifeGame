@@ -57,7 +57,9 @@ public class Grid {
 				cellsNext[i][j] = DIE;
 			}
 		}
-		this.rule = new DefaultRule(liveThreshold);
+
+		//this.rule = new DefaultRule(liveThreshold);
+		this.rule = new WuxinRule(liveThreshold);
 		createImage();
 	}
 
@@ -107,7 +109,7 @@ public class Grid {
 		for (int i = 0; i < cellNum; i++) {
 			int x = rand.nextInt(width);
 			int y = rand.nextInt(height);
-			cells[x][y] = LIVE;
+			cells[x][y] = rule.genRandomLiveCell();
 		}
 
 		updateImage();

@@ -257,8 +257,8 @@ public class ImageProcessUI {
             return;
         }
         g.drawImage(grid.getImage(), 0, 0, pnlArea);
-        g.setColor(new Color(120, 120, 120));
-        g.fillRect(0, 0, 50, 50);
+//        g.setColor(new Color(120, 120, 120));
+//        g.fillRect(0, 0, 50, 50);
     }
 
     public static void main(String[] args) {

@@ -220,6 +220,10 @@ public class LifeGameUI {
         for (int i = 0; i < w; i++) {
             for (int j = 0; j < h; j++) {
                 int cell = cells[i][j];
+
+                // 活细胞的填充色
+                g.setColor(new Color(cell));
+
                 // 细胞活着，就在对应的格子填上颜色
                 if (Grid.isLive(cell)) {
                     g.fillRect(i * c, j * c, c, c);

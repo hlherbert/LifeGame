@@ -1,4 +1,4 @@
-public class DefaultRule implements Rule {
+public class DefaultRule extends AbstractRule {
 	private int liveThreshold = 0;
 
 	private static boolean isLive(int cell) {

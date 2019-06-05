@@ -4,7 +4,7 @@
  * @author hl
  *
  */
-public class ContourRule implements Rule {
+public class ContourRule extends AbstractRule {
 	private int colorDiffThreshold = 10;
 	private int liveThreshold = 0;
 

@@ -6,7 +6,7 @@ import java.awt.Color;
  * @author hl
  *
  */
-public class WaterRule implements Rule {
+public class WaterRule extends AbstractRule {
     private int moshuiThreshold = 100; // 墨水颜色阈值，低于这个就是有墨水
     private int liveThreshold = 0;
 
