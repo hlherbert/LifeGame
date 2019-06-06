@@ -4,10 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ImageProcessUI {
-    private static final String IMAGE_FILENAME = "e.jpg";
+    //private static final String IMAGE_FILENAME = "b.jpg";
+
     private static final int INIT_COLOR_DIFF = 100;
     private static final int INIT_GRID_SIZE = 800;
-    private static final int INIT_CELL_NUM = 50000;
+    private static final int INIT_CELL_NUM = 10;
     private static final int WAIT_TIME_MS = 100; // 每次迭代后延迟的时间
     private static final int PLAY_TIMES = 1; // 每次PLAY的次数
     private static final int PLAY_STEP = 1; // 每次PLAY，迭代次数
@@ -22,12 +23,14 @@ public class ImageProcessUI {
     private JButton btnPlay;
     private JButton btnReset;
     private JButton btnLoadImg;
+    private JComboBox<String> cmbSelImg;
     private JPanel pnlArea;
     private JTextField txtGridSize;
     private JTextField txtCellNum;
     private JTextField txtLiveThreshold;
     private JTextField txtColorDiffThreshold;
     private JCheckBox chkBlackWhite;
+    private String loadImgFilename;
 
     /**
      * { 创建并显示GUI。出于线程安全的考虑， 这个方法在事件调用线程中调用。
@@ -85,8 +88,19 @@ public class ImageProcessUI {
         panel.add(txtSize);
         this.txtGridSize = txtSize;
 
+        // 选择图片
+        JLabel lblSelImg = new JLabel("选择图片:");
+        lblSelImg.setBounds(300, 20, 80, 25);
+        panel.add(lblSelImg);
+
+        // 选择图片下拉开给你
+        JComboBox<String> cmbSelImg = new JComboBox(new String[]{"a.jpg", "b.jpg", "c.jpg", "d.jpg", "e.jpg", "f.jpg"});
+        cmbSelImg.setBounds(400, 20, 80, 25);
+        panel.add(cmbSelImg);
+        this.cmbSelImg = cmbSelImg;
+
         // 输入
-        JLabel lblCellNum = new JLabel("细胞个数:");
+        JLabel lblCellNum = new JLabel("细胞个数%:");
         lblCellNum.setBounds(10, 50, 80, 25);
         panel.add(lblCellNum);
 
@@ -169,7 +183,8 @@ public class ImageProcessUI {
         this.gridSize = Integer.parseInt(strGridSize);
 
         String strCellNum = this.txtCellNum.getText();
-        this.cellNum = Integer.parseInt(strCellNum);
+        int cellNumPercent = Integer.parseInt(strCellNum);
+        this.cellNum = gridSize * gridSize * cellNumPercent / 100;
 
         String strLiveTherhold = this.txtLiveThreshold.getText();
         this.liveThreshold = Integer.parseInt(strLiveTherhold);
@@ -178,6 +193,9 @@ public class ImageProcessUI {
         this.colorDiffThreshold = Integer.parseInt(strColorDiffTherhold);
 
         isTransferImageToGray = this.chkBlackWhite.isSelected();
+
+        loadImgFilename = this.cmbSelImg.getItemAt(cmbSelImg.getSelectedIndex());
+
     }
 
     private void setComponentActions() {
@@ -227,7 +245,7 @@ public class ImageProcessUI {
             public void actionPerformed(ActionEvent e) {
                 loadInputParams();
 
-                grid.createByImage(IMAGE_FILENAME, liveThreshold,
+                grid.createByImage(loadImgFilename, liveThreshold,
                         colorDiffThreshold, isTransferImageToGray);
 
                 pnlArea.setBounds(pnlArea.getX(), pnlArea.getY(),

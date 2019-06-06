@@ -82,7 +82,11 @@ public class Grid {
             cellsNext = ImageUtil.createCellsFromImage(image);
             rand = new Random(System.currentTimeMillis());
 
-            this.rule = new WaterRule(liveThreshold, colorDiffThreshold);
+            //this.rule = new WaterRule(liveThreshold, colorDiffThreshold);
+            this.rule = new WuxinRule(liveThreshold);
+
+            this.rule.preprocess(cells, width, height);
+            updateImage();
 
         } catch (IOException e) {
             e.printStackTrace();

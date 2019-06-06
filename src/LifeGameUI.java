@@ -78,16 +78,16 @@ public class LifeGameUI {
         this.txtGridSize = txtSize;
 
         // 输入
-        JLabel lblCellNum = new JLabel("细胞个数:");
-        lblCellNum.setBounds(10, 50, 80, 25);
+        JLabel lblCellNum = new JLabel("细胞个数%(0-100):");
+        lblCellNum.setBounds(10, 50, 120, 25);
         panel.add(lblCellNum);
 
         /*
          * 创建文本域用于用户输入
          */
         JTextField txtCellNum = new JTextField(20);
-        txtCellNum.setBounds(100, 50, 165, 25);
-        txtCellNum.setText("1000");
+        txtCellNum.setBounds(130, 50, 165, 25);
+        txtCellNum.setText("10");
         panel.add(txtCellNum);
         this.txtCellNum = txtCellNum;
 
@@ -134,8 +134,12 @@ public class LifeGameUI {
         String strGridSize = this.txtGridSize.getText();
         this.gridSize = Integer.parseInt(strGridSize);
 
+        // 细胞个数百分比
         String strCellNum = this.txtCellNum.getText();
-        this.cellNum = Integer.parseInt(strCellNum);
+        int cellNumPercent = Integer.parseInt(strCellNum);
+
+        // 细胞个数
+        this.cellNum = this.gridSize * this.gridSize * cellNumPercent / 100;
 
         String strLiveTherhold = this.txtLiveThreshold.getText();
         this.liveThreshold = Integer.parseInt(strLiveTherhold);

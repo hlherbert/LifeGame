@@ -13,11 +13,12 @@ public class WuxinRule implements Rule {
     private Random random = new Random(System.currentTimeMillis());
 
     // 金木水火土的颜色和对应值
-    private final static int JIN_COLOR = new Color(255, 215, 0).getRGB();
-    private final static int MU_COLOR = new Color(244, 164, 96).getRGB();
+    private final static int DIE_COLOR = Grid.DIE;
+    private final static int JIN_COLOR = new Color(255, 255, 0).getRGB();
+    private final static int MU_COLOR = new Color(34, 177, 76).getRGB();
     private final static int SHUI_COLOR = new Color(30, 144, 255).getRGB();
     private final static int HUO_COLOR = new Color(255, 0, 0).getRGB();
-    private final static int TU_COLOR = new Color(115, 74, 18).getRGB();
+    private final static int TU_COLOR = new Color(185, 122, 87).getRGB();
 
 
     private final static int DIE = 0;
@@ -69,14 +70,14 @@ public class WuxinRule implements Rule {
         SHEN_TB[JIN] = SHUI;
         SHEN_TB[SHUI] = MU;
 
-        WUXIN_CODEC.put(Grid.DIE, DIE);
+        WUXIN_CODEC.put(DIE_COLOR, DIE);
         WUXIN_CODEC.put(JIN_COLOR, JIN);
         WUXIN_CODEC.put(MU_COLOR, MU);
         WUXIN_CODEC.put(SHUI_COLOR, SHUI);
         WUXIN_CODEC.put(HUO_COLOR, HUO);
         WUXIN_CODEC.put(TU_COLOR, TU);
 
-        WUXIN_COLORS[DIE] = Grid.DIE;
+        WUXIN_COLORS[DIE] = DIE_COLOR;
         WUXIN_COLORS[JIN] = JIN_COLOR;
         WUXIN_COLORS[MU] = MU_COLOR;
         WUXIN_COLORS[SHUI] = SHUI_COLOR;
@@ -97,7 +98,7 @@ public class WuxinRule implements Rule {
 
 
     private static boolean isLive(int cell) {
-        return (cell != Grid.DIE);
+        return (cell != DIE_COLOR);
     }
 
     public WuxinRule(int liveThreshold) {
@@ -127,14 +128,40 @@ public class WuxinRule implements Rule {
     }
 
     /**
-     * 五行颜色转五行编码
+     * 颜色转五行编码
      *
-     * @param wuxinColor 五行颜色
+     * @param color 颜色
      * @return 五行编码
      */
-    private static int encodeWuxinColor(int wuxinColor) {
+    private static int encodeWuxinColor(int color) {
+        // 颜色预处理，将不是五行颜色找到最近的五行颜色
+        int wuxinColor = toMostLikeWuxinColor(color);
         return WUXIN_CODEC.get(wuxinColor);
+
+        //return WUXIN_CODEC.get(color);
     }
+
+    /**
+     * 将颜色转换为最接近的五行颜色
+     *
+     * @param color 颜色
+     * @return 最像的五行颜色
+     */
+    private static int toMostLikeWuxinColor(int color) {
+        int mostLikeColor = WUXIN_COLORS[DIE];
+        double distMin = ImageUtil.findColorDistanceByHue(color, mostLikeColor);
+
+        for (int i = 1; i < WUXIN_SIZE; i++) {
+            int wuxinColor = WUXIN_COLORS[i];
+            double dist = ImageUtil.findColorDistanceByHue(color, wuxinColor);
+            if (dist < distMin) {
+                distMin = dist;
+                mostLikeColor = wuxinColor;
+            }
+        }
+        return mostLikeColor;
+    }
+
 
 
     /**
@@ -159,6 +186,17 @@ public class WuxinRule implements Rule {
         return mostWuxin;
     }
 
+
+    @Override
+    public void preprocess(int[][] cells, int width, int height) {
+        // 将所有cell颜色转为最接近的wuxin颜色
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                int wuxinColor = toMostLikeWuxinColor(cells[x][y]);
+                cells[x][y] = wuxinColor;
+            }
+        }
+    }
 
     @Override
     public void updateCellState(int[][] cells, int[][] cellsNext, int x, int y,
@@ -216,10 +254,10 @@ public class WuxinRule implements Rule {
 //				cell = Grid.DIE;
 //			} else
             if (nKezhiNeighbours >= 2) {
-                cell = Grid.DIE;
+                cell = DIE_COLOR;
             }
         } else {
-            if (nLiveNeighbours >= 2) {
+            if (nLiveNeighbours >= liveThreshold) {
                 int mostWuxin = findMostWuxin(nWuxin);
                 cellCode = getShen(mostWuxin);
                 cell = decodeWuxinColor(cellCode);
