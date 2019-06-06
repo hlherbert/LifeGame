@@ -135,10 +135,10 @@ public class WuxinRule implements Rule {
      */
     private static int encodeWuxinColor(int color) {
         // 颜色预处理，将不是五行颜色找到最近的五行颜色
-        int wuxinColor = toMostLikeWuxinColor(color);
-        return WUXIN_CODEC.get(wuxinColor);
+//        int wuxinColor = toMostLikeWuxinColor(color);
+//        return WUXIN_CODEC.get(wuxinColor);
 
-        //return WUXIN_CODEC.get(color);
+        return WUXIN_CODEC.get(color);
     }
 
     /**

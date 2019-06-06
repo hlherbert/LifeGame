@@ -3,8 +3,8 @@
 
 ## 启动
 两个启动类：
-* ImageProcessUI
-* LifeGameUI
+* LifeGameUI - 展示生命游戏，每个方块是个元胞。
+* ImageProcessUI - 可以读取预先定义的图像，每个像素点是个元胞。
 
 
 ## 五行-金木水火土（计划）

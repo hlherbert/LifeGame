@@ -14,12 +14,14 @@ public class LifeGameUI {
     private int gridSize = 0;
     private int cellNum = 0;
     private int liveThreshold = 0;
+    private String ruleName = "default";
     private JButton btnPlay;
     private JButton btnReset;
     private JPanel pnlArea;
     private JTextField txtGridSize;
     private JTextField txtCellNum;
     private JTextField txtLiveThreshold;
+    private JComboBox<String> cmbSelRule;
 
     /**
      * { 创建并显示GUI。出于线程安全的考虑， 这个方法在事件调用线程中调用。
@@ -101,9 +103,19 @@ public class LifeGameUI {
          */
         JTextField txtLiveThreshold = new JTextField(20);
         txtLiveThreshold.setBounds(100, 80, 165, 25);
-        txtLiveThreshold.setText("3");
+        txtLiveThreshold.setText("2");
         panel.add(txtLiveThreshold);
         this.txtLiveThreshold = txtLiveThreshold;
+
+        // 规则
+        JLabel lblRule = new JLabel("规则:");
+        lblRule.setBounds(300, 80, 50, 25);
+        panel.add(lblRule);
+
+        // 选择规则下拉
+        this.cmbSelRule = new JComboBox(RuleFactory.getRuleNames());
+        cmbSelRule.setBounds(350, 80, 80, 25);
+        panel.add(cmbSelRule);
 
         // 创建PLAY按钮
         JButton btnPlay = new JButton("Play");
@@ -143,6 +155,10 @@ public class LifeGameUI {
 
         String strLiveTherhold = this.txtLiveThreshold.getText();
         this.liveThreshold = Integer.parseInt(strLiveTherhold);
+
+        // 规则
+        String strRuleName = this.cmbSelRule.getItemAt(cmbSelRule.getSelectedIndex());
+        this.ruleName = strRuleName;
     }
 
     private void setComponentActions() {
@@ -154,7 +170,7 @@ public class LifeGameUI {
             public void actionPerformed(ActionEvent e) {
                 if (grid.isEmpty()) {
                     loadInputParams();
-                    grid.create(gridSize, gridSize, cellNum, liveThreshold);
+                    grid.create(gridSize, gridSize, cellNum, liveThreshold, ruleName);
                     grid.reset();
                 }
                 for (int i = 0; i < PLAY_TIMES; i++) {
@@ -178,7 +194,7 @@ public class LifeGameUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 loadInputParams();
-                grid.create(gridSize, gridSize, cellNum, liveThreshold);
+                grid.create(gridSize, gridSize, cellNum, liveThreshold, ruleName);
                 grid.reset();
                 img = ImageUtil.createImageFromCells(grid.getCells(),
                         grid.getWidth(), grid.getHeight());

@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 public class ImageProcessUI {
     //private static final String IMAGE_FILENAME = "b.jpg";
 
+    private static final String INIT_RULE = "default";
     private static final int INIT_COLOR_DIFF = 100;
     private static final int INIT_GRID_SIZE = 800;
     private static final int INIT_CELL_NUM = 10;
@@ -123,7 +124,7 @@ public class ImageProcessUI {
          */
         JTextField txtLiveThreshold = new JTextField(20);
         txtLiveThreshold.setBounds(100, 80, 165, 25);
-        txtLiveThreshold.setText("3");
+        txtLiveThreshold.setText("2");
         panel.add(txtLiveThreshold);
         this.txtLiveThreshold = txtLiveThreshold;
 
@@ -207,7 +208,7 @@ public class ImageProcessUI {
             public void actionPerformed(ActionEvent e) {
                 if (grid.isEmpty()) {
                     loadInputParams();
-                    grid.create(gridSize, gridSize, cellNum, liveThreshold);
+                    grid.create(gridSize, gridSize, cellNum, liveThreshold, INIT_RULE);
                     grid.reset();
                 }
                 for (int i = 0; i < PLAY_TIMES; i++) {
@@ -230,7 +231,7 @@ public class ImageProcessUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 loadInputParams();
-                grid.create(gridSize, gridSize, cellNum, liveThreshold);
+                grid.create(gridSize, gridSize, cellNum, liveThreshold, INIT_RULE);
                 grid.reset();
                 pnlArea.setBounds(pnlArea.getX(), pnlArea.getY(), gridSize
                         * CELL_SIZE, gridSize * CELL_SIZE);
@@ -246,7 +247,7 @@ public class ImageProcessUI {
                 loadInputParams();
 
                 grid.createByImage(loadImgFilename, liveThreshold,
-                        colorDiffThreshold, isTransferImageToGray);
+                        colorDiffThreshold, isTransferImageToGray, INIT_RULE);
 
                 pnlArea.setBounds(pnlArea.getX(), pnlArea.getY(),
                         grid.getWidth() * CELL_SIZE, grid.getHeight()

@@ -42,7 +42,7 @@ public class Grid {
         return cells == null;
     }
 
-    public void create(int w, int h, int cellNum, int liveThreshold) {
+    public void create(int w, int h, int cellNum, int liveThreshold, String ruleName) {
         this.width = w; // 区域宽度
         this.height = h; // 区域高度
         this.cellNum = cellNum; // 初始细胞个数
@@ -58,12 +58,12 @@ public class Grid {
         }
 
         //this.rule = new DefaultRule(liveThreshold);
-        this.rule = new WuxinRule(liveThreshold);
+        this.rule = RuleFactory.createRule(ruleName, liveThreshold);
         createImage();
     }
 
     public void createByImage(String filename, int liveThreshold,
-                              int colorDiffThreshold, boolean transferToGray) {
+                              int colorDiffThreshold, boolean transferToGray, String ruleName) {
         try {
             image = ImageIO.read(new File(filename));
             // 图片转为黑白照片
@@ -83,7 +83,7 @@ public class Grid {
             rand = new Random(System.currentTimeMillis());
 
             //this.rule = new WaterRule(liveThreshold, colorDiffThreshold);
-            this.rule = new WuxinRule(liveThreshold);
+            this.rule = RuleFactory.createRule(ruleName, liveThreshold);
 
             this.rule.preprocess(cells, width, height);
             updateImage();
